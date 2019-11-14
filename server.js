@@ -21,7 +21,7 @@ app.use(express.static('public'))
 
 app.listen(port);
 
-console.log(`API server started on: http://localhost:${port}`);
+console.log(`API server started on port ${port}`);
 
 app.use(bodyParser.urlencoded({ extended: true }));
 
