@@ -2,7 +2,8 @@
 let jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt')
 let config = require('../config');
-const User = require('../models/usersModel.js');
+const UserInfo = require('../models/UserInfo');
+const UserAccount = require('../models/UserAccount');
 
 exports.loginUser = function(req, res) {
     var email = req.body.email;
@@ -10,7 +11,7 @@ exports.loginUser = function(req, res) {
     console.log('login: ',email);
     
     // For the given email/password fetch user from DB
-    User.getUserByEmail(email, 
+    UserAccount.getUserByEmail(email, 
     function(err, result) {
         if (err) {
             res.json({
@@ -20,11 +21,14 @@ exports.loginUser = function(req, res) {
         }
         let user;
         result.forEach(row => { user = row });
-        console.log(user.email);
+        //console.log(user.email);
         if (email && password && email === user.email) {
             bcrypt.compare(password, user.password, function(isError, isSuccessfull) {
                 if(isSuccessfull) {
-                    let token = jwt.sign({email: email},
+                    let token = jwt.sign({
+                        userID: user.userID,
+                        email: email
+                        },
                         config.secret,
                         // { expiresIn: '24h' // expires in 24 hours
                         // }
@@ -34,7 +38,7 @@ exports.loginUser = function(req, res) {
                         success: true,
                         message: 'Signin Successful!',
                         token: token,
-                        userId: user.id
+                        userId: user.userID
                     });
                 } else {  
                     res.json({

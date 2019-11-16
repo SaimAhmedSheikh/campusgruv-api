@@ -1,8 +1,14 @@
 'use strict';
 
-const User = require('../models/usersModel.js');
+const UserAccount = require('../models/UserAccount');
 let jwt = require('jsonwebtoken');
 let config = require('../config');
+const sendSignupMail = require('../server-mails/signup.js');
+
+exports.sendVerifyEmail = function(req, res) {
+    if(req.body.email && req.body.userID)
+        sendSignupMail(req.body.email, req.body.first_name, req.body.userID);
+}
 
 exports.verify = function(req, res) {
     if((`${req.protocol}://${req.get('host')}`) ==(config.apiBaseUrl))
@@ -11,7 +17,7 @@ exports.verify = function(req, res) {
         const decoded = jwt.verify(req.params.token, config.secret);
         console.log(decoded);
         
-        User.updateById(decoded.userId, { email_verified: 1 }, function(err, resp) {
+        UserAccount.updateById(decoded.userID, { email_verified: 1, active: 1 }, function(err, resp) {
             if (err)
                 res.send(err);
             if(resp.affectedRows > 0) {

@@ -13,7 +13,8 @@ var transporter = nodemailer.createTransport({
 module.exports = function sendSignupMail(userEmail, userName, userId) {
     const emailToken =  jwt.sign(
                         {
-                            userId: userId
+                            userID: userId,
+                            email: userEmail
                         },
                         config.secret,
                         { 

@@ -7,25 +7,25 @@ const express = require('express'),
 const mysql = require('mysql');
 // connection configurations
 const mc = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: '',
-    database: 'campusgruv'
+  host: 'remotemysql.com',
+  user: 'LDD4XX7xyz',
+  password: 'H7eBRWkQb9',
+  database: 'LDD4XX7xyz'
 });
  
 // connect to database
 mc.connect();
 
 app.use(express.static('public'))
-
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 app.listen(port);
 
 console.log(`API server started on port ${port}`);
 
-app.use(bodyParser.urlencoded({ extended: true }));
 
 var routes = require('./routes/appRoutes'); //importing route
 routes(app); //register the route
 
-app.use(express.json());
+

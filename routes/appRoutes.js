@@ -39,19 +39,27 @@ module.exports = function(app) {
   var posts = require('../controllers/postsController');
 
   // users Routes
-  app.route('/users')
-    .get(middleware.checkToken, users.list_all_users)
-    .post(users.create_a_user);
-   
-  app.route('/users/:userId')
-    .get(middleware.checkToken, users.read_a_user)
-    .put(middleware.checkToken, users.update_a_user)
-    .delete(middleware.checkToken, users.delete_a_user);
+  app.route('/users/accounts')
+    .get(middleware.checkToken, users.list_all_user_accounts)
+  app.route('/users/userinfo')
+    .get(middleware.checkToken, users.list_all_user_info)
   
-  // user login Route
+  app.route('/users/account/:userId')
+    .get(middleware.checkToken, users.read_user_account)
+    .put(middleware.checkToken, users.update_user_account)
+    .delete(middleware.checkToken, users.delete_user_account);
+  app.route('/users/info/:userId')
+    .get(middleware.checkToken, users.read_user_info)
+    .put(middleware.checkToken, users.update_user_info)
+    .delete(middleware.checkToken, users.delete_user_info);
+  
+    app.route('/users/signup').post(users.create_a_user);
+  
+    // user login Route
   app.post('/login', userAuthentication.loginUser);
 
   // email verify Route
+  app.post('/verify', emailverification.sendVerifyEmail);
   app.get('/verify/:token', emailverification.verify);
   
    // password reset Route

@@ -1,6 +1,6 @@
 'use strict';
 
-const User = require('../models/usersModel.js');
+const UserAccount = require('../models/UserAccount');
 let jwt = require('jsonwebtoken');
 let config = require('../config');
 const bcrypt = require('bcrypt');
@@ -29,7 +29,7 @@ exports.reset = function(req, res) {
         console.log("Domain is matched. Information is from authentic email");
         const decoded = jwt.verify(req.params.token, config.secret);
         console.log(decoded);
-        User.updateByEmail(decoded.email, { password: decoded.password }, function(err, resp) {
+        UserAccount.updateByEmail(decoded.email, { password: decoded.password }, function(err, resp) {
             if (err)
                 res.send(err);
             if(resp.affectedRows > 0) {
