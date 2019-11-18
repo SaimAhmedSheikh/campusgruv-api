@@ -19,7 +19,7 @@ class UserAccount {
                         newUserAccount.password = hash;
                         sql.query("INSERT INTO user_account set ?", newUserAccount, function (err, res) {
                             if (err) {
-                                console.log("error: ", err);
+                                console.log("SQL error: ", err);
                                 result(err, null);
                             }
                             else {
