@@ -1,36 +1,7 @@
 'use strict';
 let middleware = require('../middleware');
-const multer = require('multer');
-const path = require('path');
+let uploadImage = require('../uploadImage');
 
-const Storage = multer.diskStorage({
-  destination(req, file, callback) {
-    callback(null, '../public/images')
-  },
-  filename(req, file, callback) {
-    callback(null, `${file.fieldname}_${Date.now()}_${file.originalname}`)
-  },
-})
-
-const upload = multer({ 
-  storage: Storage,
-  limits: { files: 3, fileSize: 10*1024*1024 },
-  fileFilter: function(req, file, cb) {
-    checkFileType()
-  }
-});
-function checkFileType(file, cb) {
-  const fileTypes = /jpeg|jpg|png|gif/ 
-  const validExt = fileTypes.test(
-    path.extname(file.originalname).toLowerCase()
-  )
-  const valid_mimetype = fileTypes.test(file.mimetype)
-  if(validExt && valid_mimetype){
-    return cb(null, true)
-  } else {
-    cb('Error: Not an image! Only jpeg|jpg|png|gif are allowed.')
-  }
-}
 module.exports = function(app) {
   var users = require('../controllers/usersController');
   var userAuthentication = require('../controllers/loginController');
@@ -70,7 +41,7 @@ module.exports = function(app) {
 
   app.route('/posts')
       .get(middleware.checkToken, posts.filter_posts)
-      .post(middleware.checkToken, upload.array('post_images[]', 3), posts.create_a_post);
+      .post(middleware.checkToken, uploadImage.upload.array('post_images[]', 3), posts.create_a_post);
  
   app.route('/posts/:postId')
     .get(middleware.checkToken, posts.read_a_post)
