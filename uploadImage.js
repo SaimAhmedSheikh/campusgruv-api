@@ -6,7 +6,7 @@ const Storage = multer.diskStorage({
     callback(null, './public/images')
   },
   filename(req, file, callback) {
-    callback(null, `${file.fieldname}_${Date.now()}_${file.originalname}`)
+    callback(null, `${file.filename}_${Date.now()}_${file.originalname}`)
   },
 })
 
@@ -14,7 +14,7 @@ const upload = multer({
   storage: Storage,
   limits: { files: 3, fileSize: 10*1024*1024 },
   fileFilter: function(req, file, cb) {
-    checkFileType()
+    checkFileType(file, cb)
   }
 });
 function checkFileType(file, cb) {
