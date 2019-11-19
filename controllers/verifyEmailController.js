@@ -19,13 +19,14 @@ exports.verify = function(req, res) {
         
         UserAccount.updateById(decoded.userID, { email_verified: 1, active: 1 }, function(err, resp) {
             if (err)
-                res.send(err);
+                console.log(err);
+                res.send("<p>Bad request! Email not verified.</p>");
             if(resp.affectedRows > 0) {
                 console.log("Email is verified");
                 res.send("<h2>Your email has been verified successfully. </h2>");    
             } else {
                 console.log("Email not verified");
-                res.send("Bad request.");
+                res.send("<p>Bad request! Email not verified.</p>");
             }
         });
     }

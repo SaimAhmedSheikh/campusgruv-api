@@ -7,17 +7,17 @@ const sendSignupMail = require('../server-mails/signup.js');
 exports.list_all_user_accounts = function(req, res) {
   UserAccount.getAllUserAccounts(function(err, userAcc) {
     if (err)
-      res.send(err);
+      res.json({ error: true, message: 'Unable to fetch data!' });
       console.log('res', userAcc);
-    res.send(userAcc);
+    res.json(userAcc);
   });
 }
 exports.list_all_user_info = function(req, res) {
   UserInfo.getAllUserInfos(function(err, users) {
     if (err)
-      res.send(err);
+      res.json({ error: true, message: 'Unable to fetch data!' });
       console.log('res', users);
-    res.send(users);
+    res.json(users);
   });
 }
 exports.create_a_user = function(req, res) {
@@ -48,24 +48,23 @@ exports.create_a_user = function(req, res) {
   }
   //handles null error 
   if(!new_user_account || !new_user_info){
-      res.status(400).send({ error:true, message: 'Unable to create user!' });
+      res.json({ error:true, message: 'Unable to create user!' });
   }
   else {
     UserAccount.createUserAccount(new_user_account.userAccount, function(err, result) {
     if (err)
-        res.status(400).send({ error: true, message: 'Unable to create user!' });
+        res.json({ error: true, message: 'Unable to create user!' });
     else if(result==='ERROR_USER_EXISTS')
-        res.status(400).send({ error: true, message: 'Email already registered!' });
+        res.json({ error: true, message: 'Email already registered!' });
     else {
       const token = result;
       UserInfo.createUser(new_user_info.userInfo, function(err, result) {
         if (err)
-            res.status(400).send({ error: true, message: 'Unable to create user!' });
+            res.json({ error: true, message: 'Unable to create user!' });
         res.json({ error:false, message: 'User created!', token });
         sendSignupMail(email, first_name, userID);
       });
     }
-
   });
   }
 }
@@ -73,45 +72,45 @@ exports.create_a_user = function(req, res) {
 exports.read_user_info = function(req, res) {
   UserInfo.getUserInfoById(req.params.userId, function(err, user) {
     if (err)
-      res.send(err);
+      res.json({ error: true, message: 'Unable to fetch data!' });
     res.json(user);
   });
 }
 exports.read_user_account = function(req, res) {
   UserAccount.getUserAccountById(req.params.userId, function(err, user) {
     if (err)
-      res.send(err);
+      res.json({ error: true, message: 'Unable to fetch data!' });
     res.json(user);
   });
 }
 
-exports.update_user_info = function(req, res) {
+exports.update_user_info = function(req, res) { 
   UserInfo.updateById(req.params.userId, req.body, function(err, user) {
     if (err)
-      res.send(err);
-    res.json({ message: 'User successfully updated.' });
+      res.json({ error: true, message: 'Unable to update user!' });
+    res.json({ error: false, message: 'User successfully updated.' });
   });
 }
 exports.update_user_account = function(req, res) {
   UserAccount.updateById(req.params.userId, req.body, function(err, user) {
     if (err)
-      res.send(err);
-    res.json({ message: 'User successfully updated.' });
+      res.json({ error: true, message: 'Unable to update user!' });
+    res.json({ error: false, message: 'User successfully updated.' });
   });
 }
 
 exports.delete_user_info = function(req, res) {
   UserInfo.remove( req.params.userId, function(err, user) {
     if (err)
-      res.send(err);
-    res.json({ message: 'User successfully deleted' });
+      res.json({ error: true, message: 'Unable to delete user!' });
+    res.json({ error: false, message: 'User successfully deleted' });
   });
 }
 exports.delete_user_account = function(req, res) {
   UserAccount.remove( req.params.userId, function(err, user) {
     if (err)
-      res.send(err);
-    res.json({ message: 'User successfully deleted' });
+      res.json({ error: true, message: 'Unable to delete user!' });
+    res.json({ error: false, message: 'User successfully deleted' });
   });
 }
 

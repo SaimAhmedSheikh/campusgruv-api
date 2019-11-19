@@ -18,7 +18,7 @@ exports.resetPasswordRequest = function(req, res) {
                     expiresIn: '24h' // expires in 24 hours
                 }
             );
-            res.send({ 'success': true });
+            res.send({ 'error': false });
             sendPasswordResetEmail(req.body.email, token);
         });
 }
@@ -31,13 +31,13 @@ exports.reset = function(req, res) {
         console.log(decoded);
         UserAccount.updateByEmail(decoded.email, { password: decoded.password }, function(err, resp) {
             if (err)
-                res.send(err);
+                res.send({ 'error': true });
             if(resp.affectedRows > 0) {
                 console.log("Password updated");
                 res.send("<h2>Your password has been updated successfully. </h2>");    
             } else {
                 console.log("Password not updated");
-                res.send("Bad request.");
+                res.send({ 'error': true });
             }
         });
     }

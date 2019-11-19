@@ -24,12 +24,12 @@ exports.create_a_post = function(req, res) {
   console.log('body: ', req.body)
   //handles null error 
    if(!new_post.post){
-            res.status(400).send({ error: true, message: 'Unable to create post!' });
+            res.json({ error: true, message: 'Unable to create post!' });
     }
     else {
       Post.createPost(new_post.post, function(err, resp) {
         if (err)
-          res.send(err);
+          res.json({ error: true, message: 'Unable to create post!' });
         res.json({ error: false, message: 'Post created', resp });
       });
     }
@@ -38,7 +38,7 @@ exports.create_a_post = function(req, res) {
 exports.read_a_post = function(req, res) {
   Post.getPostById(req.params.postId, function(err, post) {
     if (err)
-      res.send(err);
+      res.json({ error: true, message: 'Unable to fetch data!' });
     res.json(post);
   });
 }
@@ -47,15 +47,16 @@ exports.read_a_post = function(req, res) {
 exports.update_a_post = function(req, res) {
   Post.updateById(req.params.postId, req.body, function(err, post) {
     if (err)
-      res.send(err);
-      res.json({ message: 'Post successfully updated.' });
+      res.json({ error: true, message: 'Unable to update this post!' });
+    res.json({ message: 'Post successfully updated.' });
   });
 }
 
 exports.delete_a_post = function(req, res) {
   Post.remove( req.params.postId, function(err, post) {
     if (err)
-      res.send(err);
+      res.json({ error: true, message: 'Unable to delete this post!' });
+
     res.json({ message: 'Post successfully deleted' });
   });
 }
