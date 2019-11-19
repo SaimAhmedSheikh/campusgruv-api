@@ -15,7 +15,7 @@ exports.loginUser = function(req, res) {
     function(err, result) {
         if (err) {
             res.json({
-                success: false,
+                error: true,
                 message: 'Email not registered. Enter correct email or signup first.'
                 });
         }
@@ -35,21 +35,21 @@ exports.loginUser = function(req, res) {
                     );
                     // return the JWT token for the future API calls
                     res.json({
-                        success: true,
-                        message: 'Signin Successful!',
+                        error: false,
+                        message: 'Signin Successfull!',
                         token: token,
                         userId: user.userID
                     });
                 } else {  
                     res.json({
-                        success: false,
+                        error: true,
                         message: 'Incorrect password.'
                         });
                 }
             });
         } else {
             res.json({
-                success: false,
+                error: true,
                 message: 'Incorrect email'
             });
         }
