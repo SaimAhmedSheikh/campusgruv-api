@@ -86,7 +86,12 @@ class Post {
                 values_set[index] = parseInt(values_set[index]);
                 return ' posts.postID > ?';
             }
+            else if(fieldName === 'campus_id'){
+                values_set[index] = parseInt(values_set[index]);
+                return ' posts.campus_id = ?';
+            }
             else if(fieldName === 'category_id') {
+                values_set[index] = values_set[index].split(',').map(val => parseInt(val))
                 return ` posts.category_id IN (?)`;
             }
             else if (fieldName === 'from')
@@ -97,7 +102,7 @@ class Post {
                 return ` ${fieldName} = ?`;
         });
         let search_query =  params_set.join(' AND ');
-        let sqlQuery = `SELECT * FROM ((posts INNER JOIN categories ON posts.category_id = categories.categoryID) INNER JOIN users ON posts.user_id = users.userID) WHERE 1=1 LIMIT 30`;
+        let sqlQuery = `SELECT * FROM (((posts INNER JOIN campuses ON posts.campus_id = campuses.campusID) INNER JOIN categories ON posts.category_id = categories.categoryID) INNER JOIN user_info ON posts.user_id = user_info.userID) WHERE 1=1 LIMIT 30`;
         if(queryParams.orderby === 'date') {
             orderBy = ' ORDER BY posts.post_create_date'
         }
