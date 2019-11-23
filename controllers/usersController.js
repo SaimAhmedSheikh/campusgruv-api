@@ -60,9 +60,11 @@ exports.create_a_user = function(req, res) {
       const token = result;
       UserInfo.createUser(new_user_info.userInfo, function(err, result) {
         if (err)
-            res.json({ error: true, message: 'Unable to create user!' });
-        res.json({ error:false, message: 'User created!', token });
-        sendSignupMail(email, first_name, userID);
+          res.json({ error: true, message: 'Unable to create user!' });
+        else {
+          res.json({ error:false, message: 'User created!', token });
+          sendSignupMail(email, first_name, userID);
+        }
       });
     }
   });

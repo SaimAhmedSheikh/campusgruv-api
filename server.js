@@ -13,7 +13,7 @@ const mc = mysql.createConnection({
   database: 'LDD4XX7xyz'
 });
  
-// connect to database
+// connect to database 
 mc.connect();
 
 app.use(express.static('public'))

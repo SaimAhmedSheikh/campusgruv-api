@@ -17,11 +17,11 @@ exports.verify = function(req, res) {
         const decoded = jwt.verify(req.params.token, config.secret);
         console.log(decoded);
         
-        UserAccount.updateById(decoded.userID, { email_verified: 1, active: 1 }, function(err, resp) {
+        UserAccount.updateById(decoded.userID, { email_verified: 1 }, function(err, resp) {
             if (err)
                 console.log(err);
                 res.send("<p>Bad request! Email not verified.</p>");
-            if(resp.affectedRows > 0) {
+            if(resp && resp.affectedRows > 0) {
                 console.log("Email is verified");
                 res.send("<h2>Your email has been verified successfully. </h2>");    
             } else {

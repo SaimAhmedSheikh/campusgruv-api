@@ -12,7 +12,7 @@ class UserAccount {
     static createUserAccount(newUserAccount, result) {
         UserAccount.getUserByEmail(newUserAccount.email, 
             function(err, users) {
-                if(users.length > 0) {
+                if(users && users.length > 0) {
                     result(null, 'ERROR_USER_EXISTS');
                 } else {
                     bcrypt.hash(newUserAccount.password, 10, function(err, hash) {
@@ -77,9 +77,10 @@ class UserAccount {
         });
     }
     static updateById(id, values, result) {
-        let update_set = Object.keys(values).map(value => ` ${value}  = "${values[value]}"`);
-     
+        let update_set = Object.keys(values).map(value => ` ${value}  = ${values[value]}`);
+        
         let update_query =  `UPDATE user_account SET ${update_set.join(" ,")} WHERE userID = ?`;
+        console.log(update_query);
         sql.query(update_query, [id], function (err, res) {
             if (err) {
                 console.log("error: ", err);

@@ -29,8 +29,13 @@ exports.create_a_post = function(req, res) {
     else {
       Post.createPost(new_post.post, function(err, resp) {
         if (err)
-          res.json({ error: true, message: 'Unable to create post!' });
-        res.json({ error: false, message: 'Post created', resp });
+          res.status(404).send({ error: true, message: 'Unable to create post!' });
+        else
+          {
+            console.log('res =====>' ,resp);
+            
+            res.status(200).send({ error: false, message: 'Post created', id: resp.insertId });
+          }
       });
     }
 }
