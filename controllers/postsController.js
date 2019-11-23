@@ -15,12 +15,13 @@ exports.filter_posts = function(req, res) {
 
 exports.create_a_post = function(req, res) {
   var new_post = new Post(req.body);
-  const [ file1, file2, file3 ] = req.files;
-  new_post.post.image1 = file1 ? file1.filename : '';
-  new_post.post.image2 = file2 ? file2.filename : ''
-  new_post.post.image3 = file3 ? file3.filename : ''
+  // const [ file1, file2, file3 ] = req.files;
+  // new_post.post.image1 = file1 ? file1.filename : '';
+  // new_post.post.image2 = file2 ? file2.filename : ''
+  // new_post.post.image3 = file3 ? file3.filename : ''
   
-  console.log('images: ', req.files)
+  // console.log('images: ', req.files)
+  new_post.post.image1 = 'postimage1.png';
   console.log('body: ', req.body)
   //handles null error 
    if(!new_post.post){

@@ -41,7 +41,7 @@ module.exports = function(app) {
 
   app.route('/posts')
       .get(middleware.checkToken, posts.filter_posts)
-      .post(middleware.checkToken, uploadImage.upload.array('post_images[]', 3), posts.create_a_post);
+      .post(middleware.checkToken, /*uploadImage.upload.array('post_images[]', 3),*/ posts.create_a_post);
  
   app.route('/posts/:postId')
     .get(middleware.checkToken, posts.read_a_post)

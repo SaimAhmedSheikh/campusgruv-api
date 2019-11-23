@@ -63,7 +63,7 @@ exports.create_a_user = function(req, res) {
           res.json({ error: true, message: 'Unable to create user!' });
         else {
           res.json({ error:false, message: 'User created!', token });
-          sendSignupMail(email, first_name, userID);
+          //sendSignupMail(email, first_name, userID);
         }
       });
     }
