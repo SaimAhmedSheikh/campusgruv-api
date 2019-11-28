@@ -14,20 +14,14 @@ const checkToken = function(req, res, next){
   if (token && token.length) {
     jwt.verify(token, config.secret, (err, decoded) => {
       if (err) {
-        return res.json({
-          success: false,
-          message: 'Token is not valid'
-        });
+        res.status(404).send({ error: true, message: 'Auth token is not valid' });
       } else {
         req.decoded = decoded;
         next();
       }
     });
   } else {
-    return res.json({
-      success: false,
-      message: 'Auth token is not supplied'
-    });
+    res.status(404).send({ error: true, message: 'Auth token is not supplied' });
   }
 };
 

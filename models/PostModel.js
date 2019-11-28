@@ -12,7 +12,7 @@ class Post {
     }
 
     static createPost(newPost, result) {
-        sql.query("INSERT INTO userposts set ?", newPost, function (err, res) {
+        sql.query("INSERT INTO posts set ?", newPost, function (err, res) {
             if (err) {
                 console.log("error: ", err);
                 result(err, null);

@@ -1,5 +1,5 @@
 'use strict';
-
+const fs = require('fs');
 const Post = require('../models/PostModel.js');
 const url = require('url');
 
@@ -14,15 +14,22 @@ exports.filter_posts = function(req, res) {
 }
 
 exports.create_a_post = function(req, res) {
-  var new_post = new Post(req.body);
-  // const [ file1, file2, file3 ] = req.files;
-  // new_post.post.image1 = file1 ? file1.filename : '';
-  // new_post.post.image2 = file2 ? file2.filename : ''
-  // new_post.post.image3 = file3 ? file3.filename : ''
+  console.log('body: ', req.body);
+  // const newPost = new Post(req.body.post);
+  // // const [ file1, file2, file3 ] = req.files;
+  // // new_post.post.image1 = file1 ? file1.filename : '';
+  // // new_post.post.image2 = file2 ? file2.filename : ''
+  // // new_post.post.image3 = file3 ? file3.filename : ''
   
+  // var buffer = new Buffer(req.body.imgData, 'base64');
+  // const newFilename = `${newPost.user_id}_${Date.now()}_${newPost.image1}`;
+  // console.log(`${newFilename}: `, req.body.imgData);
+  
+  // fs.writeFile(newFilename, buffer);
+
   // console.log('images: ', req.files)
-  new_post.post.image1 = 'postimage1.png';
-  console.log('body: ', req.body)
+  //new_post.post.image1 = 'postimage1.png';
+  
   //handles null error 
    if(!new_post.post){
             res.json({ error: true, message: 'Unable to create post!' });

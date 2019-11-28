@@ -8,7 +8,7 @@ module.exports = function(app) {
   var emailverification = require('../controllers/verifyEmailController');
   var passwordReset = require('../controllers/resetPassController.js');
   var posts = require('../controllers/postsController');
-
+  var likes = require('../controllers/likesController');
   // users Routes
   app.route('/users/accounts')
     .get(middleware.checkToken, users.list_all_user_accounts)
@@ -48,6 +48,14 @@ module.exports = function(app) {
     .put(middleware.checkToken, posts.update_a_post)
     .delete(middleware.checkToken, posts.delete_a_post);
 
+  app.route('/likes/:likeId')
+    .get(middleware.checkToken, likes.read_a_like)
+    .put(middleware.checkToken, likes.update_a_like)
+    .delete(middleware.checkToken, likes.delete_a_like);
+  app.route('/likes/post/:postId')
+    .get(middleware.checkToken, likes.read_post_likes)
+  app.route('/likes/user/:userId')
+    .get(middleware.checkToken, likes.read_user_likes)
   //  app.post('/upload', middleware.checkToken, upload.array('photo', 3), (req, res) => {
   //   console.log('file', req.files)
   //   console.log('body', req.body)
@@ -56,6 +64,5 @@ module.exports = function(app) {
   //     message: 'success!',
   //   })
   // })
-
 };
 

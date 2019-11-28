@@ -4,10 +4,9 @@ let jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 // let config = require('../config');
 //likes object
-class likes {
-    constructor(user) {
-        this.user = user;
-        this.created_at = new Date();
+class Like {
+    constructor(like) {
+        this.like = like;
     }
     static createLike(newLike, result) {
         sql.query("INSERT INTO likes set ?", newLike, function (err, res) {
@@ -20,8 +19,8 @@ class likes {
             }
         });
     }
-    static getlikesById(userId, result) {
-        sql.query("Select * from likes where id = ? ", userId, function (err, res) {
+    static getlikesById(likeId, result) {
+        sql.query("Select * from likes where id = ? ", likeId, function (err, res) {
             if (err) {
                 console.log("error: ", err);
                 result(err, null);
@@ -32,8 +31,31 @@ class likes {
             }
         });
     }
-
-    static getAlllikes(result) {
+    static getlikesByPostId(postId, result) {
+        sql.query("Select * from likes where post_id = ? ", postId, function (err, res) {
+            if (err) {
+                console.log("error: ", err);
+                result(err, null);
+            }
+            else {
+                console.log('Response from server: ', res);
+                result(null, res);
+            }
+        });
+    }
+    static getlikesByUserId(userId, result) {
+        sql.query("Select * from likes where user_id = ? ", userId, function (err, res) {
+            if (err) {
+                console.log("error: ", err);
+                result(err, null);
+            }
+            else {
+                console.log('Response from server: ', res);
+                result(null, res);
+            }
+        });
+    }
+    static getAllLikes(result) {
         sql.query("Select * from likes", function (err, res) {
             if (err) {
                 console.log("error: ", err);
@@ -74,4 +96,4 @@ class likes {
     }
 }
 
-module.exports = likes;
+module.exports = Like;
