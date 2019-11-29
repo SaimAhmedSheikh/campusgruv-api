@@ -15,7 +15,7 @@ let connection = mysql.createConnection({
       console.log(err.code); // 'ECONNREFUSED'
       switch (err.code) {
         case 'PROTOCOL_CONNECTION_LOST':
-        console.log('connection lost');
+        console.log('connection lost. ');
           mysql.createConnection({
               host: 'remotemysql.com',
               user: 'LDD4XX7xyz',
